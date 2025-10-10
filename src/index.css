@@ -1,20 +1,62 @@
 @import "tailwindcss";
 
+/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
+All colors MUST be HSL.
+*/
 
-:root {
-  /* font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
+@theme {
+  /* SmartBus Design System - Transportation Theme */
+  --color-background: hsl(240 10% 98%);
+  
 
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+  /* Primary: Deep Transportation Blue */
+  --color-primary: hsl(214 84% 56%);
+ 
 
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale; */
+  /* Secondary: Fresh Travel Green */
+ 
+
+  /* Available seat green */
+
+
+  /* Booked seat red */
+  --color-booked: hsl(0 84% 60%);
+  --color-booked-foreground: hsl(0 0% 100%);
+
+  /* Accent: Warm Orange for CTAs */
+  --color-accent: hsl(25 95% 53%);
+  --color-accent-foreground: hsl(0 0% 100%);
+  --color-accent-light: hsl(25 100% 85%);
+
+  --color-muted: hsl(210 40% 96%);
+  --color-muted-foreground: hsl(215 16% 47%);
+
+  --color-destructive: hsl(0 84% 60%);
+  --color-destructive-foreground: hsl(0 0% 100%);
+
+  --color-border: hsl(214 32% 91%);
+  --color-input: hsl(214 32% 91%);
+  --color-ring: hsl(214 84% 56%);
+
+  --radius: 0.5rem;
 }
 
+@layer base {
+  :root {
+    /* Additional CSS variables for gradients, shadows, and animations */
+    /* These can't be used directly in Tailwind utilities but can be used in custom CSS */
+    
+    /* Gradients */
+    --gradient-hero: linear-gradient(135deg, hsl(214 84% 56%), hsl(214 100% 35%));
+    --gradient-card: linear-gradient(145deg, hsl(0 0% 100%), hsl(210 40% 99%));
+    --gradient-success: linear-gradient(135deg, hsl(142 76% 36%), hsl(142 69% 58%));
 
+    /* Shadows */
+    --shadow-card: 0 4px 6px -1px hsl(214 84% 56% / 0.1), 0 2px 4px -1px hsl(214 84% 56% / 0.06);
+    --shadow-button: 0 2px 4px hsl(214 84% 56% / 0.2);
+    --shadow-elevated: 0 10px 15px -3px hsl(214 84% 56% / 0.1), 0 4px 6px -2px hsl(214 84% 56% / 0.05);
 
+  
+
+  }
+}

@@ -1,15 +1,15 @@
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import "./App.css";
+import HomePage from "./pages/HomePage";
 
-
-import './App.css'
-
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <HomePage />,
+  },
+]);
 function App() {
- 
-
-  return (
-    <>
-      <button className="bg-blue-700">SmartBus</button>
-    </>
-  )
+  return <RouterProvider router={router}></RouterProvider>;
 }
 
-export default App
+export default App;
