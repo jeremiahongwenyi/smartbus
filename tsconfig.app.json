@@ -8,6 +8,12 @@
     "types": ["vite/client"],
     "skipLibCheck": true,
 
+  //configure base url
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"]
+    },
+
     /* Bundler mode */
     "moduleResolution": "bundler",
     "allowImportingTsExtensions": true,
