@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { MapPin, ArrowLeftRight, Calendar, Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -15,6 +16,7 @@ import {
 import { cn } from "@/lib/utils";
 
 function RouteSearch() {
+  const navigate = useNavigate();
   const [tripType, setTripType] = useState<"one-way" | "round-trip">("one-way");
   const [departureDate, setDepartureDate] = useState<Date>();
   const [returnDate, setReturnDate] = useState<Date>();
@@ -31,18 +33,27 @@ function RouteSearch() {
   ];
 
   const swapRoutes = () => {
-    console.log('i have been clicked');
-    
+    console.log("i have been clicked");
+
     setTo(from);
     setFrom(to);
+  };
+
+  const searchBuses = () => {
+    navigate("/buses");
   };
 
   return (
     <Card className="p-6">
       <div className="space-y-6">
         <Label className="block">Trip Type</Label>
-        <RadioGroup value={tripType} className="flex gap-6"
-        onValueChange={(value)=> setTripType(value as 'one-way'| 'round-trip')}>
+        <RadioGroup
+          value={tripType}
+          className="flex gap-6"
+          onValueChange={(value) =>
+            setTripType(value as "one-way" | "round-trip")
+          }
+        >
           <div className="flex items-center space-x-2">
             <RadioGroupItem value="one-way" id="one-way" />
             <Label htmlFor="one-way">One Way</Label>
@@ -79,10 +90,14 @@ function RouteSearch() {
           </datalist>
         </div>
 
-        <div className="flex justify-center" >
-          <Button className="rounded-full" variant="outline" size="icon"
-          disabled= {!to || !from}
-          onClick={swapRoutes}>
+        <div className="flex justify-center">
+          <Button
+            className="rounded-full"
+            variant="outline"
+            size="icon"
+            disabled={!to || !from}
+            onClick={swapRoutes}
+          >
             <ArrowLeftRight className="h-4 w-4"></ArrowLeftRight>
           </Button>
         </div>
@@ -194,7 +209,8 @@ function RouteSearch() {
       <Button
         className="w-full bg-gradient-hero text-primary-foreground shadow-button hover:shadow-elevated transition-all duration-300"
         size="lg"
-        disabled = {!to || !from || !departureDate}
+        disabled={!to || !from || !departureDate}
+        onClick={searchBuses}
       >
         <Search className="h-4 w-4"></Search>
         Search Buses
