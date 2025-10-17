@@ -3,6 +3,7 @@ import "./App.css";
 import HomePage from "./pages/HomePage";
 // import RouteSearch from "./components/RouteSearch";
 import BusesPage from "./pages/BusesPage"
+import SeatSelection from "./pages/SeatSelection";
 
 const router = createBrowserRouter([
   {
@@ -13,6 +14,10 @@ const router = createBrowserRouter([
   {
     path: "buses",
     element: <BusesPage />,
+  },
+  {
+    path: "seat-selection",
+    element: <SeatSelection />,
   },
 ]);
 function App() {

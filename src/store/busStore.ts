@@ -76,15 +76,24 @@ export const mockBuses: BusData[] = [
 
 interface BusStore {
   buses: BusData[];
+  selectedBus:BusData ;
   getBuses: () => void;
   setBuses: (buses: BusData[]) => void;
+  getSelectedBus: ()=> BusData;
+  setSelectedBus: (bus:BusData) => void
 }
 
 
-const  useBuses = create<BusStore> ((set)=>({
+const  useBuses = create<BusStore> ((set,get)=>({
   buses: mockBuses,
-  getBuses: () => set({ buses: mockBuses }),
+  selectedBus: {} as BusData,
+  getBuses: () => get().buses,
   setBuses: (buses) => set({ buses }),
+  getSelectedBus: ()=> get().selectedBus,
+  setSelectedBus: (bus)=> set(()=> {
+    console.log('am setting the selected bus');
+    return {selectedBus:bus} 
+  })
 }))
 
 export default useBuses

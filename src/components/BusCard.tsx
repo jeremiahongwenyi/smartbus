@@ -11,13 +11,17 @@ import {
   RockingChair,
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
-import type { BusData } from "@/store/busStore";
+import type { BusData, } from "@/store/busStore";
+import useBuses from "@/store/busStore";
 
 function BusCard({ bus }: { bus: BusData }) {
   const navigate = useNavigate();
-  const onSelectSeats = (id: string) => {
+const storeBus = useBuses((state)=>state.setSelectedBus)
+
+  const onSelectSeats = () => {
+    storeBus(bus)
     console.log("seat selected");
-    navigate("/");
+    navigate("/seat-selection");
   };
 
   const getAmenityIcon = (amenity: string) => {
@@ -128,7 +132,7 @@ function BusCard({ bus }: { bus: BusData }) {
 
               <Button
                 // onClick={() => onSelectSeats(bus.id)}
-                onClick={() => onSelectSeats(bus.id)}
+                onClick={() => onSelectSeats()}
                 className="w-full lg:w-auto bg-gradient-hero text-primary-foreground shadow-button hover:shadow-elevated transition-all duration-300"
                 disabled={bus.availableSeats === 0}
               >
