@@ -1,9 +1,8 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "./App.css";
 import HomePage from "./pages/HomePage";
-import RouteSearch from "./pages/RouteSearch";
-import BusCard from "./pages/BusCard";
-
+// import RouteSearch from "./components/RouteSearch";
+import BusesPage from "./pages/BusesPage"
 
 const router = createBrowserRouter([
   {
@@ -12,9 +11,9 @@ const router = createBrowserRouter([
     //  element: <RouteSearch />,
   },
   {
-    path:"buses",
-    element: <BusCard/>
-  }
+    path: "buses",
+    element: <BusesPage />,
+  },
 ]);
 function App() {
   return <RouterProvider router={router}></RouterProvider>;

@@ -8,12 +8,13 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Input } from "@/components/ui/input";
 import { Calendar as CalendarComponent } from "@/components/ui/calendar";
 import { format } from "date-fns";
+// import useBuses from "@/store/busStore";
+import { cn } from "@/lib/utils";
 import {
   Popover,
   PopoverTrigger,
   PopoverContent,
 } from "@/components/ui/popover";
-import { cn } from "@/lib/utils";
 
 function RouteSearch() {
   const navigate = useNavigate();
@@ -27,10 +28,12 @@ function RouteSearch() {
   const maxDate = new Date();
   maxDate.setMonth(maxDate.getMonth() + 1);
 
-  const options = [
-    { value: "One Way", label: "One Way" },
-    { value: "Round Trip", label: "Round Trip" },
-  ];
+  // const options = [
+  //   { value: "One Way", label: "One Way" },
+  //   { value: "Round Trip", label: "Round Trip" },
+  // ];
+
+  // const availableBuses = useBuses((state:any)=> state.buses)
 
   const swapRoutes = () => {
     console.log("i have been clicked");
@@ -40,7 +43,15 @@ function RouteSearch() {
   };
 
   const searchBuses = () => {
-    navigate("/buses");
+    const query = new URLSearchParams(
+      {
+        from,
+        to,
+        departureDate: departureDate? format(departureDate,"PPP"): "",
+      }
+    );
+
+    navigate(`/buses?${query.toString()}`);
   };
 
   return (
