@@ -6,6 +6,7 @@ import useBuses from "@/store/busStore";
 import { useState } from "react";
 import { toast } from "sonner";
 import { Badge } from "@/components/ui/badge";
+import { useEffect } from "react";
 
 interface Seat {
   id: string;
@@ -17,8 +18,7 @@ interface Seat {
 
 function SeatSelection() {
   const navigate = useNavigate();
-
-  const selectedBus = useBuses((state) => state.getSelectedBus());
+  const { selectedBus, setTotalPrice, setSelectedSeats } = useBuses();
   console.log("selected bus", selectedBus);
 
   const [seats, setSeats] = useState<Seat[]>(() => {
@@ -30,14 +30,14 @@ function SeatSelection() {
       seatLayout.push({
         id: `${row}A`,
         number: `${row}A`,
-        isAvailable: true, // 70% availability
+        isAvailable: Math.random() > 0.3, // 70% availability for seats
         isSelected: false,
         type: "window",
       });
       seatLayout.push({
         id: `${row}B`,
         number: `${row}B`,
-        isAvailable: true,
+        isAvailable: Math.random() > 0.3,
         isSelected: false,
         type: "aisle",
       });
@@ -46,14 +46,14 @@ function SeatSelection() {
       seatLayout.push({
         id: `${row}C`,
         number: `${row}C`,
-        isAvailable: true ,
+        isAvailable: Math.random() > 0.3,
         isSelected: false,
         type: "aisle",
       });
       seatLayout.push({
         id: `${row}D`,
         number: `${row}D`,
-        isAvailable: true ,
+        isAvailable: Math.random() > 0.3,
         isSelected: false,
         type: "window",
       });
@@ -61,6 +61,17 @@ function SeatSelection() {
     console.log(seatLayout);
     return seatLayout;
   });
+
+  const selectedSeats = seats.filter((seat) => seat.isSelected);
+  console.log("selected seats", selectedSeats);
+
+  const totalPrice = selectedSeats.length * selectedBus.price;
+  console.log("total price", totalPrice);
+
+  useEffect(() => {
+    setSelectedSeats(selectedSeats)
+    setTotalPrice(totalPrice)
+  }, [seats]);
 
   const seatRows: Seat[][] = [];
   for (let i = 0; i < seats.length; i += 4) {
@@ -73,26 +84,11 @@ function SeatSelection() {
     navigate(`${route}`);
   };
 
-  const selectedSeats = seats.filter((seat) => seat.isSelected);
-  const totalPrice = selectedSeats.length * selectedBus.price;
-
   const toggleSeat = (seatId: string) => {
     setSeats((prevSeats) =>
       prevSeats.map((seat) => {
         if (seat.id === seatId) {
           if (!seat.isAvailable) {
-            // toast({
-            //   title: "Seat Unavailable",
-            //   description: "This seat is already booked.",
-            //   variant: "destructive"
-            // });
-            toast("Seat Unavailable", {
-              description: "This seat is already booked.",
-              action: {
-                label: "Undo",
-                onClick: () => console.log("Undo"),
-              },
-            });
             return seat;
           }
           return { ...seat, isSelected: !seat.isSelected };
@@ -109,13 +105,15 @@ function SeatSelection() {
     return "bg-available text-available-foreground hover:bg-available/80 cursor-pointer";
   };
 
-  const handleContinue = () => {};
+  const handleContinue = () => {
+    navigate("/customer-details");
+  };
 
   return (
     <div className="m-10 space-y-6">
       <div className="flex items-center gap-4">
         <Button variant="outline" size="icon" onClick={() => goBack("/buses")}>
-          <ArrowLeft className="h-4 w-4 rotate-180" />
+          <ArrowLeft className="h-4 w-4 " />
         </Button>
         <div>
           <h1 className="text-2xl font-bold">Select Your Seats</h1>
@@ -224,7 +222,7 @@ function SeatSelection() {
                 </div>
                 <div className="flex justify-between text-sm">
                   <span className="text-muted-foreground">Price per seat</span>
-                  <span>₦{selectedBus.price}</span>
+                  <span>Kes {selectedBus.price}</span>
                 </div>
               </div>
 
@@ -248,7 +246,7 @@ function SeatSelection() {
                       {selectedSeats.length > 1 ? "s" : ""})
                     </span>
                     <span className="text-primary">
-                      ₦{totalPrice.toLocaleString()}
+                      Kes {totalPrice.toLocaleString()}
                     </span>
                   </div>
                 </div>

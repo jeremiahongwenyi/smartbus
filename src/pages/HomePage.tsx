@@ -84,15 +84,6 @@ function HomePage() {
           </div>
         </div>
       </div>
-
-      {/* 
-      Future Step Section (if needed)
-      {currentStep !== "search" && (
-        <div className="max-w-6xl mx-auto">
-          {renderStep()}
-        </div>
-      )} 
-      */}
     </>
   );
 }

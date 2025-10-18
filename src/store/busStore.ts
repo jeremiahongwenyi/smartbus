@@ -1,17 +1,25 @@
-import {create} from "zustand"
+import { create } from "zustand";
 export interface BusData {
-  id: string,
-    name: string,
-    company: string,
-    departureTime: string,
-    arrivalTime: string,
-    duration: string,
-    price: number,
-    availableSeats:number,
-    totalSeats:number,
-    amenities: string[],
-    rating:number,
-    busType: string
+  id: string;
+  name: string;
+  company: string;
+  departureTime: string;
+  arrivalTime: string;
+  duration: string;
+  price: number;
+  availableSeats: number;
+  totalSeats: number;
+  amenities: string[];
+  rating: number;
+  busType: string;
+}
+
+interface Seat {
+  id: string;
+  number: string;
+  isAvailable: boolean;
+  isSelected: boolean;
+  type: "window" | "aisle" | "middle";
 }
 
 export const mockBuses: BusData[] = [
@@ -27,10 +35,10 @@ export const mockBuses: BusData[] = [
     totalSeats: 40,
     amenities: ["WiFi", "Refreshments", "AC"],
     rating: 4.8,
-    busType: "Luxury"
+    busType: "Luxury",
   },
   {
-    id: "2", 
+    id: "2",
     name: "Modern Coast",
     company: "Modern Coast Express",
     departureTime: "10:15",
@@ -41,7 +49,7 @@ export const mockBuses: BusData[] = [
     totalSeats: 35,
     amenities: ["WiFi", "AC"],
     rating: 4.5,
-    busType: "Standard"
+    busType: "Standard",
   },
   {
     id: "3",
@@ -55,10 +63,10 @@ export const mockBuses: BusData[] = [
     totalSeats: 42,
     amenities: ["WiFi", "Refreshments", "AC", "Reclining Seats"],
     rating: 4.6,
-    busType: "Executive"
+    busType: "Executive",
   },
 
-   {
+  {
     id: "4",
     name: "Ena Coach",
     company: "Ena Coaches",
@@ -70,30 +78,42 @@ export const mockBuses: BusData[] = [
     totalSeats: 42,
     amenities: ["WiFi", "Refreshments", "AC", "Reclining Seats"],
     rating: 4.6,
-    busType: "Executive"
-  }
+    busType: "Executive",
+  },
 ];
 
 interface BusStore {
   buses: BusData[];
-  selectedBus:BusData ;
+  selectedBus: BusData;
   getBuses: () => void;
   setBuses: (buses: BusData[]) => void;
-  getSelectedBus: ()=> BusData;
-  setSelectedBus: (bus:BusData) => void
+  getSelectedBus: () => BusData;
+  setSelectedBus: (bus: BusData) => void;
+  selectedSeats: Seat[];
+  totalPrice: number;
+  getSelectedSeats: () => Seat[];
+  getTotalPrice: () => number;
+  setSelectedSeats: (seats: Seat[]) => void;
+  setTotalPrice: (price: number) => void;
 }
 
-
-const  useBuses = create<BusStore> ((set,get)=>({
+const useBuses = create<BusStore>((set, get) => ({
   buses: mockBuses,
   selectedBus: {} as BusData,
   getBuses: () => get().buses,
   setBuses: (buses) => set({ buses }),
-  getSelectedBus: ()=> get().selectedBus,
-  setSelectedBus: (bus)=> set(()=> {
-    console.log('am setting the selected bus');
-    return {selectedBus:bus} 
-  })
-}))
+  getSelectedBus: () => get().selectedBus,
+  setSelectedBus: (bus) =>
+    set(() => {
+      console.log("am setting the selected bus");
+      return { selectedBus: bus };
+    }),
+  selectedSeats: [],
+  totalPrice: 0,
+  getSelectedSeats: () => get().selectedSeats,
+  getTotalPrice: () => get().totalPrice,
+  setSelectedSeats: (seats) => set({ selectedSeats: seats }),
+  setTotalPrice: (price) => set({ totalPrice: price }),
+}));
 
-export default useBuses
+export default useBuses;

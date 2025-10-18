@@ -4,6 +4,8 @@ import HomePage from "./pages/HomePage";
 // import RouteSearch from "./components/RouteSearch";
 import BusesPage from "./pages/BusesPage"
 import SeatSelection from "./pages/SeatSelection";
+import CustomerPage from "./pages/CustomerPage";
+import PaymentPage from "./pages/PaymentPage";
 
 const router = createBrowserRouter([
   {
@@ -18,6 +20,15 @@ const router = createBrowserRouter([
   {
     path: "seat-selection",
     element: <SeatSelection />,
+  },
+
+   {
+    path: "customer-details",
+    element: <CustomerPage />,
+  },
+     {
+    path: "payment-details",
+    element: <PaymentPage />,
   },
 ]);
 function App() {
