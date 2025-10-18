@@ -33,8 +33,14 @@ function CustomerPage() {
 
   const totalPrice = useBuses((state) => state.getTotalPrice());
   console.log("retrieved price", totalPrice);
-
-  const [formData, setFormData] = useState<CustomerData>({} as CustomerData);
+const [formData, setFormData] = useState<CustomerData>({
+    fullName: "",
+    age: 18,
+    idNumber: "",
+    contactNumber: "",
+    emergencyContact1: "",
+    emergencyContact2: "",
+  });
   const [errors, setErrors] = useState<Partial<CustomerData>>({});
 
   const isMinor = formData.age < 18;
@@ -93,6 +99,8 @@ function CustomerPage() {
     console.log("submit form has been clicked");
 
     if (validateForm()) {
+      console.log('form to submit to zustand');
+      
       navigate("/payment-details");
       return;
     }
@@ -154,15 +162,15 @@ function CustomerPage() {
                 </div>
 
                 {/* Age */}
-                <div className="space-y-2">
+                <div className="space-y-2 w-full">
                   <Label htmlFor="age">Age *</Label>
-                  <Select
+                  <Select 
                     value={formData.age?.toString() ?? ""}
                     onValueChange={(value) =>
                       updateFormData("age", parseInt(value))
                     }
                   >
-                    <SelectTrigger>
+                    <SelectTrigger className="w-full">
                       <SelectValue placeholder="Select your age" />
                     </SelectTrigger>
                     <SelectContent>

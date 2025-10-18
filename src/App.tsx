@@ -1,16 +1,17 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "./App.css";
-import HomePage from "./pages/HomePage";
+import Home from "./pages/Home";
 // import RouteSearch from "./components/RouteSearch";
 import BusesPage from "./pages/BusesPage"
 import SeatSelection from "./pages/SeatSelection";
 import CustomerPage from "./pages/CustomerPage";
 import PaymentPage from "./pages/PaymentPage";
+import Confirmation from "./pages/Confirmation";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <HomePage />,
+    element: <Home />,
     //  element: <RouteSearch />,
   },
   {
@@ -29,6 +30,11 @@ const router = createBrowserRouter([
      {
     path: "payment-details",
     element: <PaymentPage />,
+  },
+
+     {
+    path: "confirmation",
+    element: <Confirmation/>,
   },
 ]);
 function App() {

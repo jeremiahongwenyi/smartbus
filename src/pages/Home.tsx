@@ -2,7 +2,7 @@ import { MapPin, Users, Star } from "lucide-react";
 import heroImage from "../assets/bus-hero.jpg";
 import RouteSearch from "../components/RouteSearch";
 
-function HomePage() {
+function Home() {
   return (
     <>
       {/* Hero Section */}
@@ -88,4 +88,4 @@ function HomePage() {
   );
 }
 
-export default HomePage;
+export default Home;
