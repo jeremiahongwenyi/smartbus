@@ -52,7 +52,7 @@ function Home() {
                 Easy Route Selection
               </h3>
               <p className="text-muted-foreground">
-                Search and select from hundreds of routes across Nigeria with
+                Search and select from hundreds of routes across Kenya with
                 our intuitive interface.
               </p>
             </div>

@@ -1,15 +1,12 @@
 @import "tailwindcss";
 @import "tw-animate-css";
-/* ---break---
-*/
+
+/* Define dark variant */
 @custom-variant dark (&:is(.dark *));
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
-All colors MUST be HSL.
-*/
-
+/* --- SmartBus Theme (Single Unified Theme) --- */
 @theme {
-  /* SmartBus Design System - Transportation Theme */
+  /* Light mode colors */
   --color-background: hsl(240 10% 98%);
   --color-foreground: hsl(210 15% 10%);
 
@@ -19,38 +16,23 @@ All colors MUST be HSL.
   --color-popover: hsl(0 0% 100%);
   --color-popover-foreground: hsl(210 15% 10%);
 
-  /* Primary: Deep Transportation Blue */
   --color-primary: hsl(214 84% 56%);
   --color-primary-foreground: hsl(0 0% 100%);
   --color-primary-light: hsl(214 100% 85%);
   --color-primary-dark: hsl(214 100% 35%);
 
-  /* Secondary: Fresh Travel Green */
   --color-secondary: hsl(142 76% 36%);
   --color-secondary-foreground: hsl(0 0% 100%);
   --color-secondary-light: hsl(142 51% 85%);
 
-  /* Available seat green */
   --color-available: hsl(142 69% 58%);
-  --color-available-foreground: hsl(0 0% 100%);
-
-  /* Booked seat red */
   --color-booked: hsl(0 84% 60%);
-  --color-booked-foreground: hsl(0 0% 100%);
-
-  /* Accent: Warm Orange for CTAs */
   --color-accent: hsl(25 95% 53%);
-  --color-accent-foreground: hsl(0 0% 100%);
-  --color-accent-light: hsl(25 100% 85%);
 
   --color-muted: hsl(210 40% 96%);
   --color-muted-foreground: hsl(215 16% 47%);
-
   --color-destructive: hsl(0 84% 60%);
-  --color-destructive-foreground: hsl(0 0% 100%);
-
   --color-border: hsl(214 32% 91%);
-  --color-input: hsl(214 32% 91%);
   --color-ring: hsl(214 84% 56%);
 
   --radius: 0.5rem;
@@ -58,9 +40,6 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    /* Additional CSS variables for gradients, shadows, and animations */
-    /* These can't be used directly in Tailwind utilities but can be used in custom CSS */
-
     /* Gradients */
     --gradient-hero: linear-gradient(135deg, hsl(214 84% 56%), hsl(214 100% 35%));
     --gradient-card: linear-gradient(145deg, hsl(0 0% 100%), hsl(210 40% 99%));
@@ -75,70 +54,35 @@ All colors MUST be HSL.
     --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     --transition-bounce: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
 
-    /* Sidebar colors */
+    /* Sidebar */
     --sidebar-background: hsl(0 0% 98%);
     --sidebar-foreground: hsl(240 5.3% 26.1%);
     --sidebar-primary: hsl(240 5.9% 10%);
     --sidebar-primary-foreground: hsl(0 0% 98%);
     --sidebar-accent: hsl(240 4.8% 95.9%);
-    --sidebar-accent-foreground: hsl(240 5.9% 10%);
     --sidebar-border: hsl(220 13% 91%);
-    --sidebar-ring: hsl(217.2 91.2% 59.8%);
   }
 
   .dark {
-    /* Dark mode for SmartBus */
     --color-background: hsl(210 15% 6%);
     --color-foreground: hsl(210 40% 98%);
-
     --color-card: hsl(210 15% 9%);
     --color-card-foreground: hsl(210 40% 98%);
-
-    --color-popover: hsl(210 15% 9%);
-    --color-popover-foreground: hsl(210 40% 98%);
-
     --color-primary: hsl(214 100% 70%);
     --color-primary-foreground: hsl(210 15% 6%);
-    --color-primary-light: hsl(214 100% 85%);
-    --color-primary-dark: hsl(214 100% 45%);
-
     --color-secondary: hsl(142 69% 58%);
-    --color-secondary-foreground: hsl(210 15% 6%);
-    --color-secondary-light: hsl(142 51% 85%);
-
-    --color-available: hsl(142 69% 58%);
-    --color-available-foreground: hsl(210 15% 6%);
-
-    --color-booked: hsl(0 84% 60%);
-    --color-booked-foreground: hsl(0 0% 100%);
-
-    --color-accent: hsl(25 95% 63%);
-    --color-accent-foreground: hsl(210 15% 6%);
-    --color-accent-light: hsl(25 100% 85%);
-
     --color-muted: hsl(210 15% 15%);
     --color-muted-foreground: hsl(215 20% 65%);
-
-    --color-destructive: hsl(0 84% 60%);
-    --color-destructive-foreground: hsl(0 0% 100%);
-
     --color-border: hsl(210 15% 15%);
-    --color-input: hsl(210 15% 15%);
     --color-ring: hsl(214 100% 70%);
 
-    /* Dark gradients */
     --gradient-hero: linear-gradient(135deg, hsl(214 100% 70%), hsl(214 100% 45%));
     --gradient-card: linear-gradient(145deg, hsl(210 15% 9%), hsl(210 15% 12%));
-    --gradient-success: linear-gradient(135deg, hsl(142 69% 58%), hsl(142 69% 58%));
 
     --sidebar-background: hsl(240 5.9% 10%);
     --sidebar-foreground: hsl(240 4.8% 95.9%);
     --sidebar-primary: hsl(224.3 76.3% 48%);
-    --sidebar-primary-foreground: hsl(0 0% 100%);
-    --sidebar-accent: hsl(240 3.7% 15.9%);
-    --sidebar-accent-foreground: hsl(240 4.8% 95.9%);
     --sidebar-border: hsl(240 3.7% 15.9%);
-    --sidebar-ring: hsl(217.2 91.2% 59.8%);
   }
 }
 
@@ -151,6 +95,7 @@ All colors MUST be HSL.
     @apply bg-background text-foreground;
   }
 }
+
 @layer components {
   .bg-gradient-hero {
     background: var(--gradient-hero);
@@ -158,10 +103,6 @@ All colors MUST be HSL.
 
   .bg-gradient-card {
     background: var(--gradient-card);
-  }
-
-  .bg-gradient-success {
-    background: var(--gradient-success);
   }
 
   .shadow-card {
@@ -175,127 +116,8 @@ All colors MUST be HSL.
   .shadow-button {
     box-shadow: var(--shadow-button);
   }
-}
-/* ---break---
-*/
-@theme inline {
-  --radius-sm: calc(var(--radius) - 4px);
-  --radius-md: calc(var(--radius) - 2px);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) + 4px);
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --color-card: var(--card);
-  --color-card-foreground: var(--card-foreground);
-  --color-popover: var(--popover);
-  --color-popover-foreground: var(--popover-foreground);
-  --color-primary: var(--primary);
-  --color-primary-foreground: var(--primary-foreground);
-  --color-secondary: var(--secondary);
-  --color-secondary-foreground: var(--secondary-foreground);
-  --color-muted: var(--muted);
-  --color-muted-foreground: var(--muted-foreground);
-  --color-accent: var(--accent);
-  --color-accent-foreground: var(--accent-foreground);
-  --color-destructive: var(--destructive);
-  --color-border: var(--border);
-  --color-input: var(--input);
-  --color-ring: var(--ring);
-  --color-chart-1: var(--chart-1);
-  --color-chart-2: var(--chart-2);
-  --color-chart-3: var(--chart-3);
-  --color-chart-4: var(--chart-4);
-  --color-chart-5: var(--chart-5);
-  --color-sidebar: var(--sidebar);
-  --color-sidebar-foreground: var(--sidebar-foreground);
-  --color-sidebar-primary: var(--sidebar-primary);
-  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
-  --color-sidebar-accent: var(--sidebar-accent);
-  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
-  --color-sidebar-border: var(--sidebar-border);
-  --color-sidebar-ring: var(--sidebar-ring);
-}
-/* ---break---
-*/
-:root {
-  --radius: 0.625rem;
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
- --primary: hsl(214 84% 56%);
 
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  /* --accent: oklch(0.97 0 0); */
---accent:oklch(0.646 0.222 41.116);
-
-  --accent-foreground: oklch(0.205 0 0);
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
-  --chart-1: oklch(0.646 0.222 41.116);
-  --chart-2: oklch(0.6 0.118 184.704);
-  --chart-3: oklch(0.398 0.07 227.392);
-  --chart-4: oklch(0.828 0.189 84.429);
-  --chart-5: oklch(0.769 0.188 70.08);
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.205 0 0);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
-  --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0);
-}
-/* ---break---
-*/
-.dark {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.205 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.205 0 0);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.922 0 0);
-  --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
-  --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.556 0 0);
-  --chart-1: oklch(0.488 0.243 264.376);
-  --chart-2: oklch(0.696 0.17 162.48);
-  --chart-3: oklch(0.769 0.188 70.08);
-  --chart-4: oklch(0.627 0.265 303.9);
-  --chart-5: oklch(0.645 0.246 16.439);
-  --sidebar: oklch(0.205 0 0);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.556 0 0);
-}
-/* ---break---
-*/
-@layer base {
-  * {
-    @apply border-border outline-ring/50;
-  }
-  body {
-    @apply bg-background text-foreground;
+  .bg-gradient-success {
+    background: var(--gradient-success);
   }
 }

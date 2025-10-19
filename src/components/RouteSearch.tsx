@@ -115,7 +115,7 @@ function RouteSearch() {
 
         <div className="flex justify-center">
           <Button
-            className="rounded-full"
+            className="rounded-full hover:text-white"
             variant="outline"
             size="icon"
             disabled={!to || !from}
@@ -163,11 +163,11 @@ function RouteSearch() {
               <Button
                 variant="outline"
                 className={cn(
-                  "w-full justify-start text-left font-normal",
+                  "w-full justify-start text-left font-normal hover:text-white",
                   !departureDate && "text-muted-foreground"
                 )}
               >
-                <Calendar className="mr-2 h-4 w-4" />
+                <Calendar className="mr-2 h-4 w-4 " />
                 {departureDate ? format(departureDate, "PPP") : "Select date"}
               </Button>
             </PopoverTrigger>
