@@ -5,7 +5,14 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Label } from "@radix-ui/react-label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Input } from "@/components/ui/input";
+
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Calendar as CalendarComponent } from "@/components/ui/calendar";
 import { format, formatISO } from "date-fns";
 import { cn } from "@/lib/utils";
@@ -22,19 +29,30 @@ function RouteSearch() {
   const [tripType, setTripType] = useState<"one-way" | "round-trip">("one-way");
   const [departureDate, setDepartureDate] = useState<Date>();
   const [returnDate, setReturnDate] = useState<Date>();
-  const [to, setTo] = useState("");
-  const [from, setFrom] = useState("");
+  const [to, setTo] = useState("default");
+  const [from, setFrom] = useState("default");
 
   const today = new Date();
   const maxDate = new Date();
   maxDate.setMonth(maxDate.getMonth() + 1);
 
-  // const options = [
-  //   { value: "One Way", label: "One Way" },
-  //   { value: "Round Trip", label: "Round Trip" },
-  // ];
-
-  // const availableBuses = useBuses((state:any)=> state.buses)
+  const towns = [
+    "Nairobi",
+    "Kikuyu",
+    "Limuru",
+    "Tigoni",
+    "Kamandura",
+    "Kimende",
+    "Mai Mahiu",
+    "Naivasha",
+    "Karati",
+    "Gilgil",
+    "Elementaita",
+    "Kikopey",
+    "Salgaa",
+    "Njoro",
+    "Nakuru",
+  ];
 
   const swapRoutes = () => {
     console.log("i have been clicked");
@@ -83,27 +101,26 @@ function RouteSearch() {
 
       {/* Route Selection */}
 
-      <div className="grid grid-cols-1 md:grid-cols-5 gap-4 items-end ">
+      <div className="grid grid-cols-1 md:grid-cols-5 gap-4 items-end">
         <div className="md:col-span-2 space-y-2">
           <Label htmlFor="from" className="flex gap-2 items-center">
-            <MapPin className="h-4 w-4 "></MapPin>
+            <MapPin className="h-4 w-4" />
             From
           </Label>
-          <Input
-            id="from"
-            list="cities-from"
-            value={from}
-            onChange={(e) => setFrom(e.target.value)}
-            onFocus={() => setFrom("")}
-            placeholder="Select departure city"
-            className="pl-4"
-          />
-          <datalist id="cities-from">
-            <option value="Kisumu"></option>
-            <option value="Bondo"></option>
-            <option value="Nairobi"></option>
-            <option value="Kisii"></option>
-          </datalist>
+
+          <Select value={from} onValueChange={setFrom}>
+            <SelectTrigger id="to" className="pl-4 w-full">
+              <SelectValue placeholder="Select destination city" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="default">Select departure town</SelectItem>
+              {towns
+                .filter((town) => town !== to)
+                .map((town) => (
+                  <SelectItem value={town}>{town}</SelectItem>
+                ))}
+            </SelectContent>
+          </Select>
         </div>
 
         <div className="flex justify-center">
@@ -125,22 +142,19 @@ function RouteSearch() {
             To
           </Label>
 
-          <div className="relative">
-            <Input
-              id="to"
-              placeholder="Select destination city"
-              list="cities-to"
-              value={to}
-              onChange={(e) => setTo(e.target.value)}
-              onFocus={() => setTo("")}
-              className="pl-4"
-            />
-
-            <datalist id="cities-to">
-              <option value="Kitale"></option>
-              <option value="Mombasa"></option>
-            </datalist>
-          </div>
+          <Select value={to} onValueChange={setTo}>
+            <SelectTrigger id="to" className="pl-4 w-full">
+              <SelectValue placeholder="Select destination city" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="default">Select destination town</SelectItem>
+              {towns
+                .filter((town) => town !== from)
+                .map((town) => (
+                  <SelectItem value={town}>{town}</SelectItem>
+                ))}
+            </SelectContent>
+          </Select>
         </div>
       </div>
 

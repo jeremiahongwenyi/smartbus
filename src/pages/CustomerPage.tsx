@@ -207,7 +207,7 @@ function CustomerPage() {
                   <Label htmlFor="contactNumber">Contact Number *</Label>
                   <Input
                     id="contactNumber"
-                    placeholder="+234 xxx xxx xxxx"
+                    placeholder="+254 xxx xxx xxxx"
                     value={formData.contactNumber}
                     onChange={(e) =>
                       updateFormData("contactNumber", e.target.value)
