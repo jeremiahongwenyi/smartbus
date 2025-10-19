@@ -22,6 +22,22 @@ interface Seat {
   type: "window" | "aisle" | "middle";
 }
 
+export interface CustomerData {
+  fullName: string;
+  age: number;
+  idNumber: string;
+  contactNumber: string;
+  emergencyContact1?: string;
+  emergencyContact2?: string;
+}
+
+export interface RouteDetails {
+  to:string;
+  from:string;
+  departureDate: string | null;
+  returnDate: string | null;
+}
+
 export const mockBuses: BusData[] = [
   {
     id: "1",
@@ -85,24 +101,22 @@ export const mockBuses: BusData[] = [
 interface BusStore {
   buses: BusData[];
   selectedBus: BusData;
-  getBuses: () => void;
   setBuses: (buses: BusData[]) => void;
-  getSelectedBus: () => BusData;
   setSelectedBus: (bus: BusData) => void;
   selectedSeats: Seat[];
   totalPrice: number;
-  getSelectedSeats: () => Seat[];
-  getTotalPrice: () => number;
   setSelectedSeats: (seats: Seat[]) => void;
   setTotalPrice: (price: number) => void;
+  customerData: CustomerData;
+  updateCustomerData: (data:CustomerData) => void;
+  routeDetails: RouteDetails;
+  setRouteDetails: (route: RouteDetails)=> void
 }
 
 const useBuses = create<BusStore>((set, get) => ({
   buses: mockBuses,
   selectedBus: {} as BusData,
-  getBuses: () => get().buses,
   setBuses: (buses) => set({ buses }),
-  getSelectedBus: () => get().selectedBus,
   setSelectedBus: (bus) =>
     set(() => {
       console.log("am setting the selected bus");
@@ -110,10 +124,13 @@ const useBuses = create<BusStore>((set, get) => ({
     }),
   selectedSeats: [],
   totalPrice: 0,
-  getSelectedSeats: () => get().selectedSeats,
-  getTotalPrice: () => get().totalPrice,
   setSelectedSeats: (seats) => set({ selectedSeats: seats }),
   setTotalPrice: (price) => set({ totalPrice: price }),
+  customerData: {} as CustomerData,
+  updateCustomerData: (data)=> set({customerData:data}),
+  routeDetails: {} as RouteDetails,
+  setRouteDetails: (route) => set({routeDetails:route})
+
 }));
 
 export default useBuses;

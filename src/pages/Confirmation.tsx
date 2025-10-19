@@ -5,10 +5,11 @@ import { useNavigate } from "react-router-dom";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import useBuses from "@/store/busStore";
-import { format,  } from "date-fns";
+import { format } from "date-fns";
 
 function Confirmation() {
-  const { selectedBus, selectedSeats, totalPrice } = useBuses();
+  const { selectedBus, selectedSeats, totalPrice, routeDetails, customerData } =
+    useBuses();
   const bookingDate = format(new Date(), "PPP");
 
   const navigate = useNavigate();
@@ -83,21 +84,21 @@ function Confirmation() {
               <div className="space-y-3">
                 <div>
                   <p className="text-sm text-muted-foreground">Full Name</p>
-                  {/* <p className="font-medium">{customerData.fullName}</p> */}
+                  <p className="font-medium">{customerData.fullName}</p>
                 </div>
                 <div>
                   <p className="text-sm text-muted-foreground">Age</p>
-                  {/* <p className="font-medium">{customerData.age} years old</p> */}
+                  <p className="font-medium">{customerData.age} years old</p>
                 </div>
                 <div>
                   <p className="text-sm text-muted-foreground">
                     Contact Number
                   </p>
-                  {/* <p className="font-medium">{customerData.contactNumber}</p> */}
+                  <p className="font-medium">{customerData.contactNumber}</p>
                 </div>
                 <div>
                   <p className="text-sm text-muted-foreground">ID Number</p>
-                  {/* <p className="font-medium">{customerData.idNumber}</p> */}
+                  <p className="font-medium">{customerData.idNumber}</p>
                 </div>
               </div>
             </div>
@@ -110,12 +111,29 @@ function Confirmation() {
               <div className="space-y-3">
                 <div>
                   <p className="text-sm text-muted-foreground">Route</p>
-                  {/* <p className="font-medium">{routeInfo.from} → {routeInfo.to}</p> */}
+                  <p className="font-medium">
+                    {routeDetails.from} → {routeDetails.to}
+                  </p>
                 </div>
                 <div>
                   <p className="text-sm text-muted-foreground">Travel Date</p>
-                  {/* <p className="font-medium">{routeInfo.travelDate}</p> */}
+                  <p className="font-medium">
+                    {routeDetails.departureDate
+                      ? format(routeDetails.departureDate, "dd/MM/yyy")
+                      : ""}
+                  </p>
                 </div>
+                {routeDetails.returnDate && (
+                  <div>
+                    <p className="text-sm text-muted-foreground">Return Date</p>
+                    <p className="font-medium">
+                      {routeDetails.returnDate
+                        ? format(routeDetails.returnDate, "dd/MM/yyyy")
+                        : ""}
+                    </p>
+                  </div>
+                )}
+
                 <div>
                   <p className="text-sm text-muted-foreground">
                     Departure Time
@@ -174,31 +192,17 @@ function Confirmation() {
 
       {/* Action Buttons */}
       <div className="flex flex-col sm:flex-row gap-4 justify-center print:hidden">
-        <Button
-
-          variant="outline"
-          className="flex-1 sm:flex-initial"
-        >
+        <Button variant="outline" className="flex-1 sm:flex-initial">
           <Download className="mr-2 h-4 w-4" />
-
         </Button>
 
-        <Button
-  
-          variant="outline"
-          className="flex-1 sm:flex-initial"
-        >
+        <Button variant="outline" className="flex-1 sm:flex-initial">
           <Printer className="mr-2 h-4 w-4" />
           Print Receipt
         </Button>
 
-        <Button
-       
-          variant="outline"
-          className="flex-1 sm:flex-initial"
-        >
+        <Button variant="outline" className="flex-1 sm:flex-initial">
           <Share2 className="mr-2 h-4 w-4" />
-        
         </Button>
 
         <Button

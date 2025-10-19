@@ -27,13 +27,12 @@ export interface CustomerData {
 
 function CustomerPage() {
   const navigate = useNavigate();
-  const selectedBus = useBuses((state) => state.getSelectedBus());
-  const selectedSeats = useBuses((state) => state.getSelectedSeats());
+  const { selectedBus, selectedSeats } = useBuses();
   console.log("retrieved seats", selectedSeats);
 
-  const totalPrice = useBuses((state) => state.getTotalPrice());
+  const { totalPrice, updateCustomerData } = useBuses();
   console.log("retrieved price", totalPrice);
-const [formData, setFormData] = useState<CustomerData>({
+  const [formData, setFormData] = useState<CustomerData>({
     fullName: "",
     age: 18,
     idNumber: "",
@@ -99,8 +98,8 @@ const [formData, setFormData] = useState<CustomerData>({
     console.log("submit form has been clicked");
 
     if (validateForm()) {
-      console.log('form to submit to zustand');
-      
+      console.log("form data", formData);
+      updateCustomerData(formData);
       navigate("/payment-details");
       return;
     }
@@ -164,7 +163,7 @@ const [formData, setFormData] = useState<CustomerData>({
                 {/* Age */}
                 <div className="space-y-2 w-full">
                   <Label htmlFor="age">Age *</Label>
-                  <Select 
+                  <Select
                     value={formData.age?.toString() ?? ""}
                     onValueChange={(value) =>
                       updateFormData("age", parseInt(value))

@@ -6,6 +6,7 @@ import {
   Banknote,
   Loader2,
   CreditCard,
+  AlertCircle,
 } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { useNavigate } from "react-router-dom";
@@ -18,25 +19,31 @@ import useBuses from "@/store/busStore";
 
 type PaymentMethod = "mobile-money" | "card" | "cash";
 
+interface paymentData {
+  mobileNumber: string;
+  cardNumber: string;
+  expiryDate: string;
+  cvv: string;
+  cardHolderName: string;
+}
+
 function PaymentPage() {
   const navigate = useNavigate();
-  const { getSelectedBus, getSelectedSeats, getTotalPrice } = useBuses();
+  const { selectedBus,selectedSeats, totalPrice, customerData } = useBuses();
   const [paymentMethod, setPaymentMethod] =
     useState<PaymentMethod>("mobile-money");
   const [isProcessing, setIsProcessing] = useState(false);
+
+  const [errors, setErrors] = useState<Partial<paymentData>>({});
 
   const goBack = (route: string) => {
     console.log(route);
     navigate(`${route}`);
   };
 
-  const [paymentData, setPaymentData] = useState({
-    mobileNumber: "",
-    cardNumber: "",
-    expiryDate: "",
-    cvv: "",
-    cardHolderName: "",
-  });
+  const [paymentData, setPaymentData] = useState<paymentData>(
+    {} as paymentData
+  );
 
   const getPaymentIcon = (method: PaymentMethod) => {
     switch (method) {
@@ -49,27 +56,60 @@ function PaymentPage() {
     }
   };
   const handlePayment = async () => {
-    setIsProcessing(true);
+    if (formValidation(paymentMethod)) {
+      setIsProcessing(true);
+      try {
+        // Simulate payment processing
+        await new Promise((resolve) => setTimeout(resolve, 3000));
 
-    try {
-      // Simulate payment processing
-      await new Promise((resolve) => setTimeout(resolve, 3000));
+        // Generate booking ID
+        const bookingId = `SB${Date.now().toString().slice(-8)}`;
 
-      // Generate booking ID
-      const bookingId = `SB${Date.now().toString().slice(-8)}`;
-
-      toast("Payment Successful!", {
-        description: `Your booking has been confirmed. Booking ID: ${bookingId}`,
-      });
-      navigate("/confirmation");
-    } catch (error) {
-      toast("Payment Failed", {
-        description:
-          "There was an error processing your payment. Please try again.",
-      });
-    } finally {
-      setIsProcessing(false);
+        toast("Payment Successful!", {
+          description: `Your booking has been confirmed. Booking ID: ${bookingId}`,
+        });
+        navigate("/confirmation");
+      } catch (error) {
+        toast("Payment Failed", {
+          description:
+            "There was an error processing your payment. Please try again.",
+        });
+      } finally {
+        setIsProcessing(false);
+      }
     }
+  };
+
+  const formValidation = (method: PaymentMethod) => {
+    const newErrors = {} as paymentData;
+    switch (method) {
+      case "mobile-money":
+        {
+          if (!paymentData.mobileNumber?.trim()) {
+            newErrors.mobileNumber = "Mobile Number is required";
+          }
+        }
+        break;
+        case 'card': {
+          if(!paymentData.cardHolderName?.trim()){
+            newErrors.cardHolderName = "Card Holder name is required";
+          }
+
+           if(!paymentData.cardNumber?.trim()){
+            newErrors.cardNumber = "Card Number is required";
+          }
+
+           if(!paymentData.expiryDate?.trim()){
+            newErrors.expiryDate = "Expiry date name is required";
+          }
+           if(!paymentData.cvv?.trim()){
+            newErrors.cvv = "CVV is required";
+          }
+        }
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
   };
 
   const renderPaymentForm = () => {
@@ -90,8 +130,14 @@ function PaymentPage() {
                   }))
                 }
               />
+              {errors.mobileNumber && (
+                <p className="text-sm text-destructive flex items-center gap-1">
+                  <AlertCircle className="h-4 w-4" />
+                  {errors.mobileNumber}
+                </p>
+              )}
               <p className="text-sm text-muted-foreground">
-                We support MTN, Airtel, Glo, and 9mobile
+                We support Mpesa and Airtel Money
               </p>
             </div>
           </div>
@@ -113,6 +159,12 @@ function PaymentPage() {
                   }))
                 }
               />
+               {errors.cardHolderName && (
+                <p className="text-sm text-destructive flex items-center gap-1">
+                  <AlertCircle className="h-4 w-4" />
+                  {errors.cardHolderName}
+                </p>
+              )}
             </div>
 
             <div className="space-y-2">
@@ -128,6 +180,12 @@ function PaymentPage() {
                   }))
                 }
               />
+               {errors.cardNumber && (
+                <p className="text-sm text-destructive flex items-center gap-1">
+                  <AlertCircle className="h-4 w-4" />
+                  {errors.cardNumber}
+                </p>
+              )}
             </div>
 
             <div className="grid grid-cols-2 gap-4">
@@ -144,6 +202,12 @@ function PaymentPage() {
                     }))
                   }
                 />
+                 {errors.expiryDate && (
+                <p className="text-sm text-destructive flex items-center gap-1">
+                  <AlertCircle className="h-4 w-4" />
+                  {errors.expiryDate}
+                </p>
+              )}
               </div>
               <div className="space-y-2">
                 <Label htmlFor="cvv">CVV</Label>
@@ -155,6 +219,12 @@ function PaymentPage() {
                     setPaymentData((prev) => ({ ...prev, cvv: e.target.value }))
                   }
                 />
+                 {errors.cvv && (
+                <p className="text-sm text-destructive flex items-center gap-1">
+                  <AlertCircle className="h-4 w-4" />
+                  {errors.cvv}
+                </p>
+              )}
               </div>
             </div>
           </div>
@@ -302,7 +372,7 @@ function PaymentPage() {
                     ) : (
                       <>
                         <CreditCard className="mr-2 h-5 w-5" />
-                        Pay Kes {getTotalPrice()}
+                        Pay Kes {totalPrice}
                       </>
                     )}
                   </>
@@ -321,32 +391,34 @@ function PaymentPage() {
               <div className="space-y-3">
                 <div className="flex justify-between text-sm">
                   <span className="text-muted-foreground">Passenger</span>
-                  {/* <span>{customerData.fullName}</span> */}
+                  <span>{customerData.fullName}</span>
                 </div>
                 <div className="flex justify-between text-sm">
                   <span className="text-muted-foreground">Bus</span>
-                  <span>{getSelectedBus().name}</span>
+                  <span>{selectedBus.name}</span>
                 </div>
                 <div className="flex justify-between text-sm">
                   <span className="text-muted-foreground">Company</span>
-                  <span>{getSelectedBus().company}</span>
+                  <span>{selectedBus.company}</span>
                 </div>
                 <div className="flex justify-between text-sm">
                   <span className="text-muted-foreground">Departure</span>
-                  <span>{getSelectedBus().departureTime}</span>
+                  <span>{selectedBus.departureTime}</span>
                 </div>
                 <div className="flex justify-between text-sm">
                   <span className="text-muted-foreground">Seats</span>
-                  <span>{getSelectedSeats().map(seat=>seat.id).join(", ")}</span>
+                  <span>
+                    {selectedSeats
+                      .map((seat) => seat.id)
+                      .join(", ")}
+                  </span>
                 </div>
               </div>
 
               <div className="border-t pt-4">
                 <div className="flex justify-between text-lg font-semibold">
                   <span>Total Amount</span>
-                  <span className="text-primary">
-                    Kes {getTotalPrice()}
-                  </span>
+                  <span className="text-primary">Kes {totalPrice}</span>
                 </div>
               </div>
 

@@ -18,7 +18,7 @@ interface Seat {
 
 function SeatSelection() {
   const navigate = useNavigate();
-  const { selectedBus, setTotalPrice, setSelectedSeats } = useBuses();
+  const { selectedBus, setTotalPrice, setSelectedSeats, routeDetails } = useBuses();
   console.log("selected bus", selectedBus);
 
   const [seats, setSeats] = useState<Seat[]>(() => {
@@ -214,7 +214,7 @@ function SeatSelection() {
               <div className="space-y-3">
                 <div className="flex justify-between text-sm">
                   <span className="text-muted-foreground">Route</span>
-                  <span>{selectedBus.company}</span>
+                  <span>{routeDetails.from} → {routeDetails.to}</span>
                 </div>
                 <div className="flex justify-between text-sm">
                   <span className="text-muted-foreground">Departure</span>

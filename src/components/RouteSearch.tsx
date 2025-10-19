@@ -7,7 +7,7 @@ import { Label } from "@radix-ui/react-label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Input } from "@/components/ui/input";
 import { Calendar as CalendarComponent } from "@/components/ui/calendar";
-import { format } from "date-fns";
+import { format, formatISO } from "date-fns";
 // import useBuses from "@/store/busStore";
 import { cn } from "@/lib/utils";
 import {
@@ -15,8 +15,10 @@ import {
   PopoverTrigger,
   PopoverContent,
 } from "@/components/ui/popover";
+import useBuses from "@/store/busStore";
 
 function RouteSearch() {
+  const { setRouteDetails, routeDetails } = useBuses();
   const navigate = useNavigate();
   const [tripType, setTripType] = useState<"one-way" | "round-trip">("one-way");
   const [departureDate, setDepartureDate] = useState<Date>();
@@ -43,13 +45,17 @@ function RouteSearch() {
   };
 
   const searchBuses = () => {
-    const query = new URLSearchParams(
-      {
-        from,
-        to,
-        departureDate: departureDate? format(departureDate,"PPP"): "",
-      }
-    );
+    setRouteDetails({
+      from: from,
+      to: to,
+      departureDate: departureDate ? formatISO(departureDate) : null,
+      returnDate: returnDate ? formatISO(returnDate) : null,
+    });
+    const query = new URLSearchParams({
+      from,
+      to,
+      departureDate: departureDate ? format(departureDate, "PPP") : "",
+    });
 
     navigate(`/buses?${query.toString()}`);
   };
@@ -90,7 +96,7 @@ function RouteSearch() {
             value={from}
             onChange={(e) => setFrom(e.target.value)}
             onFocus={() => setFrom("")}
-            placeholder="Select destination city"
+            placeholder="Select departure city"
             className="pl-4"
           />
           <datalist id="cities-from">
@@ -220,7 +226,12 @@ function RouteSearch() {
       <Button
         className="w-full bg-gradient-hero text-primary-foreground shadow-button hover:shadow-elevated transition-all duration-300"
         size="lg"
-        disabled={!to || !from || !departureDate}
+        disabled={
+          !to ||
+          !from ||
+          !departureDate ||
+          (tripType === "round-trip" && !returnDate)
+        }
         onClick={searchBuses}
       >
         <Search className="h-4 w-4"></Search>
