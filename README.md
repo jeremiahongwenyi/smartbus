@@ -116,3 +116,5 @@ npx tailwindcss init -p
 
 # 4. Start the development server
 npm run dev
+
+## project-structure
