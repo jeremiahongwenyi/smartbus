@@ -26,8 +26,10 @@
   --color-secondary-light: hsl(142 51% 85%);
 
   --color-available: hsl(142 69% 58%);
+  --color-available-foreground: hsl( 0 0% 100%);
   --color-booked: hsl(0 84% 60%);
   --color-accent: hsl(25 95% 53%);
+  --color-booked-foreground:hsl( 0 0% 100%);
 
   --color-muted: hsl(210 40% 96%);
   --color-muted-foreground: hsl(215 16% 47%);
