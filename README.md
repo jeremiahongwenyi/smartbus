@@ -81,7 +81,7 @@ This project demonstrates frontend best practices including:
 | **Styling** | Tailwind CSS v4 |
 | **State Management** | Zustand |
 | **Routing** | React Router |
-| **Backend / Database** | Firebase (Firestore, Authentication) |
+| **Backend / Database** | Firebase (Firestore) |
 | **Version Control** | Git & GitHub |
 
 ---
@@ -104,7 +104,7 @@ Follow the steps below to run the project locally:
 
 ```bash
 # 1. Clone the repository
-git clone https://github.com/yourusername/smartbus.git
+git clone https://github.com/jeremiahongwenyi/smartbus.git
 cd smartbus
 
 # 2. Install dependencies
