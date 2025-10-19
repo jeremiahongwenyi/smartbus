@@ -29,8 +29,8 @@ function RouteSearch() {
   const [tripType, setTripType] = useState<"one-way" | "round-trip">("one-way");
   const [departureDate, setDepartureDate] = useState<Date>();
   const [returnDate, setReturnDate] = useState<Date>();
-  const [to, setTo] = useState("default");
-  const [from, setFrom] = useState("default");
+  const [to, setTo] = useState("");
+  const [from, setFrom] = useState("");
 
   const today = new Date();
   const maxDate = new Date();
@@ -110,14 +110,15 @@ function RouteSearch() {
 
           <Select value={from} onValueChange={setFrom}>
             <SelectTrigger id="to" className="pl-4 w-full">
-              <SelectValue placeholder="Select destination city" />
+              <SelectValue placeholder="Select departure town" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="default">Select departure town</SelectItem>
               {towns
                 .filter((town) => town !== to)
                 .map((town) => (
-                  <SelectItem value={town}>{town}</SelectItem>
+                  <SelectItem key={town} value={town}>
+                    {town}
+                  </SelectItem>
                 ))}
             </SelectContent>
           </Select>
@@ -144,14 +145,16 @@ function RouteSearch() {
 
           <Select value={to} onValueChange={setTo}>
             <SelectTrigger id="to" className="pl-4 w-full">
-              <SelectValue placeholder="Select destination city" />
+              <SelectValue placeholder="Select destination town" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="default">Select destination town</SelectItem>
+      
               {towns
                 .filter((town) => town !== from)
                 .map((town) => (
-                  <SelectItem value={town}>{town}</SelectItem>
+                  <SelectItem key={town} value={town}>
+                    {town}
+                  </SelectItem>
                 ))}
             </SelectContent>
           </Select>
