@@ -16,6 +16,8 @@ import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 import useBuses from "@/store/busStore";
+import { useCustomers } from "@/store/customerStore";
+import { saveCustomerData } from "@/store/customerStore";
 
 type PaymentMethod = "mobile-money" | "card" | "cash";
 
@@ -29,7 +31,8 @@ interface paymentData {
 
 function PaymentPage() {
   const navigate = useNavigate();
-  const { selectedBus,selectedSeats, totalPrice, customerData } = useBuses();
+  const { selectedBus,selectedSeats, totalPrice,  } = useBuses();
+    const {customerData} =useCustomers()
   const [paymentMethod, setPaymentMethod] =
     useState<PaymentMethod>("mobile-money");
   const [isProcessing, setIsProcessing] = useState(false);
@@ -64,6 +67,7 @@ function PaymentPage() {
 
         // Generate booking ID
         const bookingId = `SB${Date.now().toString().slice(-8)}`;
+       saveCustomerData(customerData)
 
         toast("Payment Successful!", {
           description: `Your booking has been confirmed. Booking ID: ${bookingId}`,

@@ -15,6 +15,7 @@ import {
   SelectItem,
 } from "@/components/ui/select";
 import { toast } from "sonner";
+import { useCustomers } from "@/store/customerStore";
 
 export interface CustomerData {
   fullName: string;
@@ -30,7 +31,8 @@ function CustomerPage() {
   const { selectedBus, selectedSeats } = useBuses();
   console.log("retrieved seats", selectedSeats);
 
-  const { totalPrice, updateCustomerData } = useBuses();
+  const { totalPrice,  } = useBuses();
+  const {updateCustomerData} =useCustomers()
   console.log("retrieved price", totalPrice);
   const [formData, setFormData] = useState<CustomerData>({
     fullName: "",

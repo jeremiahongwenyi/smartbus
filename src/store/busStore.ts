@@ -22,15 +22,6 @@ interface Seat {
   type: "window" | "aisle" | "middle";
 }
 
-export interface CustomerData {
-  fullName: string;
-  age: number;
-  idNumber: string;
-  contactNumber: string;
-  emergencyContact1?: string;
-  emergencyContact2?: string;
-}
-
 export interface RouteDetails {
   to: string;
   from: string;
@@ -73,7 +64,7 @@ export const mockBuses: BusData[] = [
     company: "Dreamline Coaches",
     departureTime: "22:00",
     arrivalTime: "04:30",
-    duration: "6h 30m",
+    duration: "4h 30m",
     price: 1400,
     availableSeats: 20,
     totalSeats: 42,
@@ -88,7 +79,7 @@ export const mockBuses: BusData[] = [
     company: "Ena Coaches",
     departureTime: "22:00",
     arrivalTime: "04:30",
-    duration: "6h 30m",
+    duration: "2h 30m",
     price: 1400,
     availableSeats: 20,
     totalSeats: 42,
@@ -107,15 +98,13 @@ interface BusStore {
   totalPrice: number;
   setSelectedSeats: (seats: Seat[]) => void;
   setTotalPrice: (price: number) => void;
-  customerData: CustomerData;
-  updateCustomerData: (data: CustomerData) => void;
   routeDetails: RouteDetails;
   setRouteDetails: (route: RouteDetails) => void;
-  towns: string[]
-  fetchTowns: ()=>Promise<void>
+  towns: string[];
+  fetchTowns: () => Promise<void>;
 }
 
-const useBuses = create<BusStore>((set,get) => ({
+const useBuses = create<BusStore>((set) => ({
   buses: mockBuses,
   selectedBus: {} as BusData,
   setBuses: (buses) => set({ buses }),
@@ -128,76 +117,42 @@ const useBuses = create<BusStore>((set,get) => ({
   totalPrice: 0,
   setSelectedSeats: (seats) => set({ selectedSeats: seats }),
   setTotalPrice: (price) => set({ totalPrice: price }),
-  customerData: {} as CustomerData,
-  updateCustomerData: (data) => set({ customerData: data }),
   routeDetails: {} as RouteDetails,
   setRouteDetails: (route) => set({ routeDetails: route }),
- towns:[],
- fetchTowns: async ()=> {
-   const fetchedTowns = await getTowns();
-   console.log('fetched towns', fetchedTowns);
-   
-    set({ towns: fetchedTowns });    
- }
-}));
+  towns: [],
+  fetchTowns: async () => {
+    const fetchedTowns = await getTowns();
+    console.log("fetched towns", fetchedTowns);
 
-// const towns = [
-//   "Nairobi",
-//   "Kisumu",
-//   "Kakamega",
-//   "Bungoma",
-//   "Homa Bay",
-//   "Naivasha",
-//   "Nakuru",
-//   "Migori",
-//   "Kitale",
-//   "Mombasa",
-//   "Malindi",
-//   "Embu",
-//   "Nyeri",
-//   "Mandera",
-//   "Wajir",
-//   "Machakos",
-//   "Kisii",
-//   "Nyamira",
-//   "Kericho",
-// ];
+    set({ towns: fetchedTowns });
+  },
+}));
 
 const URL = "https://smartbus-5a355-default-rtdb.firebaseio.com/towns.json";
 
-// 🔹 Example: Upload once (overwrite)
-// export const postTowns = async () => {
-//   try {
-//     const response = await fetch(URL, {
-//       method: "POST",
-//       headers: {
-//         "Content-Type": "application/json",
-//       },
-//       body: JSON.stringify(towns),
-//     });
+export const getTowns = async (): Promise<string[]> => {
+  try {
+    const response = await fetch(URL, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      } 
+    });
 
-//     console.log("response from post", response);
-//   } catch (error) {
-//     console.error("Error uploading towns:", error);
-//   }
-// };
+    if (!response.ok) {
+      throw new Error("Failed to fetch towns, try again later");
+    }
+    const data = await response.json();
+    console.log(data);
 
-export const getTowns = async () :Promise<string[]>=> {
-  const response = await fetch(URL, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
-
-  const data = await response.json();
-  console.log(data);
-
-  const townsArray:string[] = Object.values(data)
-  const flat = townsArray.flat();
-  console.log("first array ", flat);
-
-  return flat;
+    const townsArray: string[] = Object.values(data);
+    const flat = townsArray.flat();
+    console.log("first array ", flat);
+    return flat;
+  } catch(error) {
+    console.error("Error fetching towns:", error);
+    throw error
+  }
 };
 
 export default useBuses;

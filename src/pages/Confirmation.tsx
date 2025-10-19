@@ -6,10 +6,12 @@ import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import useBuses from "@/store/busStore";
 import { format } from "date-fns";
+import { useCustomers } from "@/store/customerStore";
 
 function Confirmation() {
-  const { selectedBus, selectedSeats, totalPrice, routeDetails, customerData } =
+  const { selectedBus, selectedSeats, totalPrice, routeDetails } =
     useBuses();
+      const {customerData} =useCustomers()
   const bookingDate = format(new Date(), "PPP");
 
   const navigate = useNavigate();

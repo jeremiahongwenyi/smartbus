@@ -6,7 +6,6 @@ import { Card } from "@/components/ui/card";
 import { Label } from "@radix-ui/react-label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 
-
 import {
   Select,
   SelectContent,
@@ -38,13 +37,12 @@ function RouteSearch() {
   maxDate.setMonth(maxDate.getMonth() + 1);
 
   useEffect(() => {
-callFetch()
-   ;
+    callFetch();
   }, []);
 
-  const callFetch  = async ()=>{
-   console.log( await fetchTowns());
-  }
+  const callFetch = async () => {
+    console.log(await fetchTowns());
+  };
   const swapRoutes = () => {
     console.log("i have been clicked");
 
