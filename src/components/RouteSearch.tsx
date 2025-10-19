@@ -8,7 +8,6 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Input } from "@/components/ui/input";
 import { Calendar as CalendarComponent } from "@/components/ui/calendar";
 import { format, formatISO } from "date-fns";
-// import useBuses from "@/store/busStore";
 import { cn } from "@/lib/utils";
 import {
   Popover,
@@ -18,7 +17,7 @@ import {
 import useBuses from "@/store/busStore";
 
 function RouteSearch() {
-  const { setRouteDetails, routeDetails } = useBuses();
+  const { setRouteDetails } = useBuses();
   const navigate = useNavigate();
   const [tripType, setTripType] = useState<"one-way" | "round-trip">("one-way");
   const [departureDate, setDepartureDate] = useState<Date>();

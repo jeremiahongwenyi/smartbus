@@ -113,7 +113,7 @@ interface BusStore {
   setRouteDetails: (route: RouteDetails)=> void
 }
 
-const useBuses = create<BusStore>((set, get) => ({
+const useBuses = create<BusStore>((set) => ({
   buses: mockBuses,
   selectedBus: {} as BusData,
   setBuses: (buses) => set({ buses }),
