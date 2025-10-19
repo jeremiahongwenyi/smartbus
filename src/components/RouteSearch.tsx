@@ -1,10 +1,11 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { MapPin, ArrowLeftRight, Calendar, Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Label } from "@radix-ui/react-label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+
 
 import {
   Select,
@@ -24,7 +25,7 @@ import {
 import useBuses from "@/store/busStore";
 
 function RouteSearch() {
-  const { setRouteDetails } = useBuses();
+  const { setRouteDetails, towns, fetchTowns } = useBuses();
   const navigate = useNavigate();
   const [tripType, setTripType] = useState<"one-way" | "round-trip">("one-way");
   const [departureDate, setDepartureDate] = useState<Date>();
@@ -36,24 +37,14 @@ function RouteSearch() {
   const maxDate = new Date();
   maxDate.setMonth(maxDate.getMonth() + 1);
 
-  const towns = [
-    "Nairobi",
-    "Kikuyu",
-    "Limuru",
-    "Tigoni",
-    "Kamandura",
-    "Kimende",
-    "Mai Mahiu",
-    "Naivasha",
-    "Karati",
-    "Gilgil",
-    "Elementaita",
-    "Kikopey",
-    "Salgaa",
-    "Njoro",
-    "Nakuru",
-  ];
+  useEffect(() => {
+callFetch()
+   ;
+  }, []);
 
+  const callFetch  = async ()=>{
+   console.log( await fetchTowns());
+  }
   const swapRoutes = () => {
     console.log("i have been clicked");
 
@@ -148,7 +139,6 @@ function RouteSearch() {
               <SelectValue placeholder="Select destination town" />
             </SelectTrigger>
             <SelectContent>
-      
               {towns
                 .filter((town) => town !== from)
                 .map((town) => (

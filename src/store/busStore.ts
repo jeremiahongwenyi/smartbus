@@ -32,8 +32,8 @@ export interface CustomerData {
 }
 
 export interface RouteDetails {
-  to:string;
-  from:string;
+  to: string;
+  from: string;
   departureDate: string | null;
   returnDate: string | null;
 }
@@ -108,12 +108,14 @@ interface BusStore {
   setSelectedSeats: (seats: Seat[]) => void;
   setTotalPrice: (price: number) => void;
   customerData: CustomerData;
-  updateCustomerData: (data:CustomerData) => void;
+  updateCustomerData: (data: CustomerData) => void;
   routeDetails: RouteDetails;
-  setRouteDetails: (route: RouteDetails)=> void
+  setRouteDetails: (route: RouteDetails) => void;
+  towns: string[]
+  fetchTowns: ()=>Promise<void>
 }
 
-const useBuses = create<BusStore>((set) => ({
+const useBuses = create<BusStore>((set,get) => ({
   buses: mockBuses,
   selectedBus: {} as BusData,
   setBuses: (buses) => set({ buses }),
@@ -127,10 +129,75 @@ const useBuses = create<BusStore>((set) => ({
   setSelectedSeats: (seats) => set({ selectedSeats: seats }),
   setTotalPrice: (price) => set({ totalPrice: price }),
   customerData: {} as CustomerData,
-  updateCustomerData: (data)=> set({customerData:data}),
+  updateCustomerData: (data) => set({ customerData: data }),
   routeDetails: {} as RouteDetails,
-  setRouteDetails: (route) => set({routeDetails:route})
-
+  setRouteDetails: (route) => set({ routeDetails: route }),
+ towns:[],
+ fetchTowns: async ()=> {
+   const fetchedTowns = await getTowns();
+   console.log('fetched towns', fetchedTowns);
+   
+    set({ towns: fetchedTowns });    
+ }
 }));
+
+// const towns = [
+//   "Nairobi",
+//   "Kisumu",
+//   "Kakamega",
+//   "Bungoma",
+//   "Homa Bay",
+//   "Naivasha",
+//   "Nakuru",
+//   "Migori",
+//   "Kitale",
+//   "Mombasa",
+//   "Malindi",
+//   "Embu",
+//   "Nyeri",
+//   "Mandera",
+//   "Wajir",
+//   "Machakos",
+//   "Kisii",
+//   "Nyamira",
+//   "Kericho",
+// ];
+
+const URL = "https://smartbus-5a355-default-rtdb.firebaseio.com/towns.json";
+
+// 🔹 Example: Upload once (overwrite)
+// export const postTowns = async () => {
+//   try {
+//     const response = await fetch(URL, {
+//       method: "POST",
+//       headers: {
+//         "Content-Type": "application/json",
+//       },
+//       body: JSON.stringify(towns),
+//     });
+
+//     console.log("response from post", response);
+//   } catch (error) {
+//     console.error("Error uploading towns:", error);
+//   }
+// };
+
+export const getTowns = async () :Promise<string[]>=> {
+  const response = await fetch(URL, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+
+  const data = await response.json();
+  console.log(data);
+
+  const townsArray:string[] = Object.values(data)
+  const flat = townsArray.flat();
+  console.log("first array ", flat);
+
+  return flat;
+};
 
 export default useBuses;
