@@ -65,6 +65,21 @@ function Confirmation() {
     }
   };
 
+  const handlePrint = () => {
+    window.print();
+  };
+
+  const handleDownload = () => {
+    //Here i will call an api
+    toast("Coming Soon", {
+      description: "This feature is not yet available",
+      action: {
+        label: "Close",
+        onClick: () => console.log("Close"),
+      },
+    });
+  };
+
   const onNewBooking = () => {
     navigate("/");
   };
@@ -243,11 +258,19 @@ function Confirmation() {
 
       {/* Action Buttons */}
       <div className="flex flex-col mb-5 sm:flex-row gap-4 justify-center print:hidden">
-        <Button variant="outline" className="flex-1 sm:flex-initial">
+        <Button
+          variant="outline"
+          className="flex-1 sm:flex-initial"
+          onClick={handleDownload}
+        >
           <Download className="mr-2 h-4 w-4" />
         </Button>
 
-        <Button variant="outline" className="flex-1 sm:flex-initial">
+        <Button
+          variant="outline"
+          className="flex-1 sm:flex-initial"
+          onClick={handlePrint}
+        >
           <Printer className="mr-2 h-4 w-4" />
           Print Receipt
         </Button>
