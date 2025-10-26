@@ -7,14 +7,63 @@ import { Separator } from "@/components/ui/separator";
 import useBuses from "@/store/busStore";
 import { format } from "date-fns";
 import { useCustomers } from "@/store/customerStore";
+import { useState } from "react";
+import { toast } from "sonner";
 
 function Confirmation() {
-  const { selectedBus, selectedSeats, totalPrice, routeDetails } =
-    useBuses();
-      const {customerData} =useCustomers()
+  const { selectedBus, selectedSeats, totalPrice, routeDetails } = useBuses();
+  const { customerData } = useCustomers();
+  const [isSharing, setIsSharing] = useState(false);
   const bookingDate = format(new Date(), "PPP");
 
   const navigate = useNavigate();
+
+  const handleShare = async () => {
+    setIsSharing(true);
+    try {
+      const nav = navigator as Navigator;
+      if ("share" in nav) {
+        await navigator.share({
+          title: "SmartBus Booking Confirmation",
+          text: `Booking confirmed! Reference: ${"KUUYRYVJHF"}. Trip from ${
+            routeDetails.from
+          } to ${routeDetails.to} on ${routeDetails.departureDate}.`,
+          url: window.location.href,
+        });
+      } else {
+        console.log("Browser does not support this feature.");
+        if ("clipboard" in nav) {
+          await navigator.clipboard.writeText(
+            `Booking confirmed! Reference: ${"KUUYRYVJHF"}. Trip from ${
+              routeDetails.from
+            } to ${routeDetails.to} on ${routeDetails.departureDate}.`
+          );
+
+          toast("Copied to Clipboard", {
+            description: "Booking details copied to clipboard.",
+            action: {
+              label: "Close",
+              onClick: () => console.log("Undo"),
+            },
+          });
+          console.log("am copying successfully");
+        } else {
+          throw new Error("Error occurred Unable to share");
+        }
+      }
+    } catch (error) {
+      console.log(`error`);
+      toast("Share Failed", {
+        description: "Failed to share booking details.",
+        action: {
+          label: "Close",
+          onClick: () => console.log("Undo"),
+        },
+      });
+    } finally {
+      setIsSharing(false);
+    }
+  };
 
   const onNewBooking = () => {
     navigate("/");
@@ -193,7 +242,7 @@ function Confirmation() {
       </Card>
 
       {/* Action Buttons */}
-      <div className="flex flex-col sm:flex-row gap-4 justify-center print:hidden">
+      <div className="flex flex-col mb-5 sm:flex-row gap-4 justify-center print:hidden">
         <Button variant="outline" className="flex-1 sm:flex-initial">
           <Download className="mr-2 h-4 w-4" />
         </Button>
@@ -203,8 +252,14 @@ function Confirmation() {
           Print Receipt
         </Button>
 
-        <Button variant="outline" className="flex-1 sm:flex-initial">
+        <Button
+          variant="outline"
+          className="flex-1 sm:flex-initial"
+          onClick={handleShare}
+          disabled={isSharing}
+        >
           <Share2 className="mr-2 h-4 w-4" />
+          {isSharing ? "Sharing..." : "Share"}
         </Button>
 
         <Button
