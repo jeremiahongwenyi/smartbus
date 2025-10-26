@@ -81,6 +81,7 @@ function Confirmation() {
   };
 
   const onNewBooking = () => {
+    useBuses.persist.clearStorage(); // clears localStorage for this store
     navigate("/");
   };
 
