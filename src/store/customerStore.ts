@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import { persist } from "zustand/middleware";
 
 export interface CustomerData {
   fullName: string;
@@ -14,10 +15,18 @@ interface CustomerStore {
   updateCustomerData: (data: CustomerData) => void;
 }
 
-export const useCustomers = create<CustomerStore>((set) => ({
-  customerData: {} as CustomerData,
-  updateCustomerData: (data) => set({ customerData: data }),
-}));
+export const useCustomers = create<CustomerStore>()(
+  persist(
+    (set) => ({
+      customerData: {} as CustomerData,
+      updateCustomerData: (data) => set({ customerData: data }),
+    }),
+    {
+      name: "smartbus-customer-storage",
+    }
+  )
+);
+
 
 const URL = "https://smartbus-5a355-default-rtdb.firebaseio.com/customers.json";
 
@@ -33,9 +42,9 @@ export const saveCustomerData = async (data: CustomerData) => {
     if (resp.ok) {
       const response = await resp.json();
       console.log(response);
-      return
+      return;
     }
-    throw new Error('Failed try again later')
+    throw new Error("Failed try again later");
   } catch (error) {
     console.error("Error uploading towns:", error);
   }
