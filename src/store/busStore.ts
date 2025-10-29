@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import {persist} from "zustand/middleware"
 export interface BusData {
   id: string;
   name: string;
@@ -104,29 +105,41 @@ interface BusStore {
   fetchTowns: () => Promise<void>;
 }
 
-const useBuses = create<BusStore>((set) => ({
-  buses: mockBuses,
-  selectedBus: {} as BusData,
-  setBuses: (buses) => set({ buses }),
-  setSelectedBus: (bus) =>
-    set(() => {
-      console.log("am setting the selected bus");
-      return { selectedBus: bus };
-    }),
-  selectedSeats: [],
-  totalPrice: 0,
-  setSelectedSeats: (seats) => set({ selectedSeats: seats }),
-  setTotalPrice: (price) => set({ totalPrice: price }),
-  routeDetails: {} as RouteDetails,
-  setRouteDetails: (route) => set({ routeDetails: route }),
-  towns: [],
-  fetchTowns: async () => {
-    const fetchedTowns = await getTowns();
-    console.log("fetched towns", fetchedTowns);
+export const useBuses = create<BusStore>()(
+  persist(
+    (set) => ({
+      buses: mockBuses,
+      selectedBus: {} as BusData,
 
-    set({ towns: fetchedTowns });
-  },
-}));
+      setBuses: (buses) => set({ buses }),
+
+      setSelectedBus: (bus) => {
+        console.log("am setting the selected bus");
+        set({ selectedBus: bus });
+      },
+
+      selectedSeats: [],
+      setSelectedSeats: (seats) => set({ selectedSeats: seats }),
+
+      totalPrice: 0,
+      setTotalPrice: (price) => set({ totalPrice: price }),
+
+      routeDetails: {} as RouteDetails,
+      setRouteDetails: (route) => set({ routeDetails: route }),
+
+      towns: [],
+      fetchTowns: async () => {
+        const fetchedTowns = await getTowns();
+        console.log("fetched towns", fetchedTowns);
+        set({ towns: fetchedTowns });
+      },
+    }),
+    {
+      name: "smartbus-booking-storage", // Key used in localStorage
+    }
+  )
+);
+
 
 const URL = "https://smartbus-5a355-default-rtdb.firebaseio.com/towns.json";
 
