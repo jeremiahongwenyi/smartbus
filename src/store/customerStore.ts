@@ -27,6 +27,7 @@ export const useCustomers = create<CustomerStore>()(
   )
 );
 
+
 const URL = "https://smartbus-5a355-default-rtdb.firebaseio.com/customers.json";
 
 export const saveCustomerData = async (data: CustomerData) => {
